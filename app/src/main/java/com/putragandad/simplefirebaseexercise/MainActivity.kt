@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Get instance of Firebase
         auth = FirebaseAuth.getInstance()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity() {
             signInGoogle()
         }
 
+        // Check if user already login or not
+        if (auth.currentUser != null) {
+            goToDashboard()
+        }
     }
 
     private fun signInGoogle(){
@@ -69,20 +74,16 @@ class MainActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful){
-                val intent : Intent = Intent(this , DashboardActivity::class.java)
-                intent.putExtra("email" , account.email)
-                intent.putExtra("name" , account.displayName)
-                intent.putExtra("uid", account.id)
-                intent.putExtra("photoUrl", account.photoUrl)
-                startActivity(intent)
+                goToDashboard()
             }else{
                 Toast.makeText(this, it.exception.toString() , Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-
-
-
-
+    private fun goToDashboard() {
+        val intent = Intent(this, DashboardActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }

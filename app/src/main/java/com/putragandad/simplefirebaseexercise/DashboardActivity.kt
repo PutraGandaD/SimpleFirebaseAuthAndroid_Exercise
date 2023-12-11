@@ -20,14 +20,9 @@ class DashboardActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val email = intent.getStringExtra("email")
-        val displayName = intent.getStringExtra("name")
-        val id = intent.getStringExtra("uid")
-        val photoUrl = intent.getStringExtra("photoUrl")
-
-        binding.tvContentEmail.text = email
-        binding.tvContentName.text = displayName
-        binding.tvContentUid.text = id
+        binding.tvContentEmail.text = auth.currentUser?.email
+        binding.tvContentName.text = auth.currentUser?.displayName
+        binding.tvContentUid.text = auth.currentUser?.uid
 
         binding.btnLogout.setOnClickListener {
             auth.signOut()
