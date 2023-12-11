@@ -21,13 +21,16 @@ class DashboardActivity : AppCompatActivity() {
         // Get instance of Firebase
         auth = FirebaseAuth.getInstance()
 
-        // Set Dashboard info based on currentUser status
-        binding.tvContentEmail.text = auth.currentUser?.email
-        binding.tvContentName.text = auth.currentUser?.displayName
-        binding.tvContentUid.text = auth.currentUser?.uid
-
+        // Get profile value from Firebase
+        val email = auth.currentUser?.email
+        val name = auth.currentUser?.displayName
+        val uid = auth.currentUser?.uid
         val profileImageUri = auth.currentUser?.photoUrl
 
+        // Set Dashboard info based on currentUser status
+        binding.tvContentEmail.text = email
+        binding.tvContentName.text = name
+        binding.tvContentUid.text = uid
         Glide.with(this)
             .load(profileImageUri)
             .into(binding.ivAccount)
