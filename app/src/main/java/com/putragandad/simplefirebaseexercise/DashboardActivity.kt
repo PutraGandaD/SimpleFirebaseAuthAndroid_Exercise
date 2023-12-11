@@ -18,14 +18,22 @@ class DashboardActivity : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Get instance of Firebase
         auth = FirebaseAuth.getInstance()
 
+        // Set Dashboard info based on currentUser status
         binding.tvContentEmail.text = auth.currentUser?.email
         binding.tvContentName.text = auth.currentUser?.displayName
         binding.tvContentUid.text = auth.currentUser?.uid
 
+        val profileImageUri = auth.currentUser?.photoUrl
+
+        Glide.with(this)
+            .load(profileImageUri)
+            .into(binding.ivAccount)
+
         binding.btnLogout.setOnClickListener {
-            auth.signOut()
+            auth.signOut() // Trigger logout
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
